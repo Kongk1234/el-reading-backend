@@ -53,17 +53,21 @@ const con = mysql.createConnection({
 
   app.post("/files", function(req, res) {
     path(req, res, (err) =>{
-      if (err) res.status(500).send("Fuck");      
+      if (err) res.status(500).send("Fuck");
+      console.log("0");      
       setTimeout(() => {
+        console.log("1");
         excel(`./xl/${req.file.originalname}`).then((rows) => {
+          console.log("2");
           for (let index = 1; index < rows.length -1; index++) {
+            console.log("3");
             con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
               if(err) throw err;
             });
           }
         });
-        res.send("noice suc")
       }, 1000);  
+      res.send("noice suc")
     });
   });
 
