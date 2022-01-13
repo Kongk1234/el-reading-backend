@@ -61,8 +61,8 @@ const con = mysql.createConnection({
               if(err) throw err;
             });
           }
-        })
-      res.send("Successful");
+        });
+        res.send("noice suc")
       }, 1000);  
     });
   });
