@@ -7,12 +7,12 @@ const cors = require("cors");
 const excel = require('read-excel-file/node')
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-      cb(null, './xl/');
-    },
-  filename: function (req, file, cb) {
-      cb(null, file.originalname);
-  }
+	destination: function (req, file, cb) {
+			cb(null, './xl/');
+		},
+	filename: function (req, file, cb) {
+			cb(null, file.originalname);
+	}
 });
 
 const path = multer({storage: storage}).single("uploaded_file")
@@ -24,52 +24,47 @@ app.use(cors());
 
 
 const con = mysql.createConnection({
-    host: "localhost",
-    user: "kasper",
-    password: "Bfk57hem+",
-    database: "elReading",
-    timezone: "utc"
-  });
-  
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
-  
-  app.post("/year", function(req, res) {
-    con.query("select * from readingData where YEAR(date) = ? order by id desc", [req.body.json.year], function(err, result){
-      if(err) throw err;
-      res.send(result);
-    });
-  })
+		host: "localhost",
+		user: "kasper",
+		password: "Bfk57hem+",
+		database: "elReading",
+		timezone: "utc"
+});
+	
+con.connect(function(err) {
+	if (err) throw err;
+	console.log("Connected!");
+});
 
-  app.post("/things", function(req, res) {
-    con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [req.body.json.elHouse, req.body.json.elFirst, req.body.json.kw, req.body.json.date], function(err, result){
-      if(err) throw err;
-  });
-  res.send(req.body);
-  })
+app.post("/year", function(req, res) {
+	con.query("select * from readingData where YEAR(date) = ? order by id desc", [req.body.json.year], function(err, result){
+		if(err) throw err;
+		res.send(result);
+	});
+})
+
+app.post("/things", function(req, res) {
+	con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [req.body.json.elHouse, req.body.json.elFirst, req.body.json.kw, req.body.json.date], function(err, result){
+		if(err) throw err;
+});
+res.send(req.body);
+})
 
 
-  app.post("/files", function(req, res) {
-    path(req, res, (err) =>{
-      if (err) res.status(500).send("Fuck");
-      console.log("0");      
-      setTimeout(() => {
-        console.log("1");
-        excel(`./xl/${req.file.originalname}`).then((rows) => {
-          console.log("2");
-          for (let index = 1; index < rows.length -1; index++) {
-            console.log("3");
-            con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
-              if(err) throw err;
-            });
-          }
-        });
-      }, 1000);  
-      res.send("noice suc")
-    });
-  });
-
+app.post("/files", function(req, res) {
+	path(req, res, (err) =>{
+		if (err) res.status(500).send("Fuck"); 
+		excel(`./xl/${req.file.originalname}`).then((rows) => {
+			console.log("Rows");
+			for (let index = 1; index < rows.length -1; index++) {
+				console.log(index);
+				con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
+					if(err) throw err;
+				});
+			}
+		});
+	});
+	res.send({Message: "Success", Status: 200});
+});
 
 app.listen(42069)
