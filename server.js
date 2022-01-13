@@ -63,8 +63,8 @@ app.post("/files", function(req, res) {
 				});
 			}
 		});
+		res.send({Message: "Success", Status: 200});
 	});
-	res.send({Message: "Success", Status: 200});
 });
 
 app.listen(42069)
