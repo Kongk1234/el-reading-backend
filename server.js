@@ -54,6 +54,7 @@ const con = mysql.createConnection({
   app.post("/files", function(req, res) {
     path(req, res, (err) =>{
       if (err) res.status(500).send("Fuck");      
+      setTimeout(() => {
         excel(`./xl/${req.file.originalname}`).then((rows) => {
           for (let index = 1; index < rows.length -1; index++) {
             con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
@@ -62,6 +63,7 @@ const con = mysql.createConnection({
           }
         })
       res.send("Successful");
+      }, 1000);  
     });
   });
 
