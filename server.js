@@ -53,7 +53,8 @@ res.send(req.body);
 
 app.post("/files", function(req, res) {
 	path(req, res, (err) =>{
-		if (err) res.status(500).send("Fuck"); 
+		if (err) res.status(500).send("Fuck");
+		console.log("Here");
 		excel(`./xl/${req.file.originalname}`).then((rows) => {
 			console.log("Rows");
 			for (let index = 1; index < rows.length -1; index++) {
