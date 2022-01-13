@@ -40,7 +40,7 @@ const con = mysql.createConnection({
     con.query("select * from readingData where YEAR(date) = ? order by id desc", [req.body.json.year], function(err, result){
       if(err) throw err;
       res.send(result);
-  });
+    });
   })
 
   app.post("/things", function(req, res) {
@@ -54,14 +54,14 @@ const con = mysql.createConnection({
   app.post("/files", function(req, res) {
     path(req, res, (err) =>{
       if (err) res.status(500).send("Fuck");      
-      excel(`./xl/${req.file.originalname}`).then((rows) => {
-        for (let index = 1; index < rows.length -1; index++) {
-          con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
-            if(err) throw err;
-        });
-        }
-        res.send("Successful");
-      })
+        excel(`./xl/${req.file.originalname}`).then((rows) => {
+          for (let index = 1; index < rows.length -1; index++) {
+            con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
+              if(err) throw err;
+            });
+          }
+        })
+      res.send("Successful");
     });
   });
 
