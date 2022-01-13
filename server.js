@@ -25,7 +25,7 @@ app.use(cors());
 
 const con = mysql.createConnection({
     host: "localhost",
-    user: "kongk",
+    user: "kasper",
     password: "Bfk57hem+",
     database: "elReading",
     timezone: "utc"
