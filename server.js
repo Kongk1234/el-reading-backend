@@ -25,7 +25,7 @@ app.use(cors());
 
 const con = mysql.createConnection({
 		host: "localhost",
-		user: "kasper",
+		user: "kongk",
 		password: "Bfk57hem+",
 		database: "elReading",
 		timezone: "utc"
@@ -64,7 +64,7 @@ app.post("/files", function(req, res) {
 				});
 			}
 		});
-		res.send({Message: "Success", Status: 200});
+		res.status(301).redirect('https://el.linde-barrith.dk/');
 	});
 });
 
