@@ -50,15 +50,32 @@ app.post("/things", function(req, res) {
 res.send(req.body);
 })
 
+function shit(year, yearjson){
+	con.query("select elHouse, year(date) as timer  from readingData where year(date) = ?",[year], function(err, result){
+		yearjson.push(result);
+	});
+}
+
+app.get('/getData', function(req, res) {
+	let yearjson = []
+	let years = [];
+	con.query('select year(date) as time from readingData group by year(date)', function(err, result) {
+		result.forEach(element => {
+			shit(element.time, yearjson)
+			years.push(element.time)
+		});
+	})
+	setTimeout(() => {
+		res.send({data: yearjson, time: years})
+	}, 10);
+})
+
 
 app.post("/files", function(req, res) {
 	path(req, res, (err) =>{
 		if (err) res.status(500).send("Fuck");
-		console.log("Here");
 		excel(`./xl/${req.file.originalname}`).then((rows) => {
-			console.log("Rows");
 			for (let index = 1; index < rows.length -1; index++) {
-				console.log(index);
 				con.query("insert into readingData(elHouse, elFirst, kw, date) values (?,?,?,?)", [rows[index][1], rows[index][6], 2.3, rows[index][0]], function(err, result){
 					if(err) throw err;
 				});
