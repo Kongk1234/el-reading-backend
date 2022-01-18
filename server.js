@@ -51,7 +51,7 @@ res.send(req.body);
 })
 
 function shit(year, yearjson){
-	con.query("select elHouse, year(date) as timer  from readingData where year(date) = ?",[year], function(err, result){
+		con.query("select elHouse, year(date) as timer  from readingData where year(date) = ?",[year], function(err, result){
 		yearjson.push(result);
 	});
 }
@@ -60,9 +60,14 @@ app.get('/getData', function(req, res) {
 	let yearjson = []
 	let years = [];
 	con.query('select year(date) as time from readingData group by year(date)', function(err, result) {
+		let resultArr = []
 		result.forEach(element => {
-			shit(element.time, yearjson)
-			years.push(element.time)
+			resultArr.push(element.time)
+		});
+		resultArr.sort()
+		resultArr.forEach(element => {
+			shit(element, yearjson)
+			years.push(element)
 		});
 	})
 	setTimeout(() => {
