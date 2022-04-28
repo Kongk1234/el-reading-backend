@@ -36,6 +36,14 @@ con.connect(function(err) {
 	console.log("Connected!");
 });
 
+app.delete("/delete", function(req, res) {
+	console.log(req.body);
+	con.query("delete from readingData where elhouse = ?", [req.body.json.row], function(err, result){
+		if(err) throw err;
+		res.send(result);
+	});
+})
+
 app.post("/year", function(req, res) {
 	con.query("select * from readingData where YEAR(date) = ? order by id desc", [req.body.json.year], function(err, result){
 		if(err) throw err;
