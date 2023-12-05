@@ -11,6 +11,6 @@
     "read-excel-file": "^5.2.25"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.22"
   }
 }
