@@ -23,8 +23,8 @@ app.use(cors());
 
 const con = mysql.createConnection({
   host: "localhost",
-  user: "kongk",
-  password: "Bfk57hem",
+  user: "root",
+  password: "Bfk57hem!",
   database: "elReading",
   timezone: "utc",
 });
@@ -37,7 +37,7 @@ con.connect(function (err) {
 app.delete("/delete", function (req, res) {
   console.log(req.body);
   con.query(
-    "delete from readingData where elhouse = ?",
+    "delete from readingData where el = ?",
     [req.body.json.row],
     function (err, result) {
       if (err) throw err;
