@@ -37,7 +37,7 @@ con.connect(function (err) {
 app.delete("/delete", function (req, res) {
   console.log(req.body);
   con.query(
-    "delete from readingData where el = ?",
+    "delete from readingData where id = ?",
     [req.body.json.row],
     function (err, result) {
       if (err) throw err;
